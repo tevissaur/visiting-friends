@@ -1,11 +1,11 @@
 // Assignment Code
 let inputs = document.querySelectorAll('input')
-let password = {
+const password = {
   securePass: '',
   passLength: document.querySelector('#length').value,
   labelElem: document.querySelector('#display-length')
 }
-let upCheck = {
+const upCheck = {
   elem: document.querySelector('#upper'),
   req: false,
   isIncluded: function (p) {
@@ -19,7 +19,7 @@ let upCheck = {
   },
   charSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 }
-let lowerCheck = {
+const lowerCheck = {
   elem: document.querySelector('#lower'),
   req: false,
   isIncluded: function (p) {
@@ -33,7 +33,7 @@ let lowerCheck = {
   },
   charSet: 'abcdefghijklmnopqrstuvwxyz'
 }
-let numCheck = {
+const numCheck = {
   elem: document.querySelector('#num'),
   req: false,
   isIncluded: function (p) {
@@ -47,7 +47,7 @@ let numCheck = {
   },
   charSet: '1234567890'
 }
-let spcCheck = {
+const spcCheck = {
   elem: document.querySelector('#spc'),
   req: false,
   isIncluded: function (p) {
@@ -62,17 +62,20 @@ let spcCheck = {
   charSet: '!@#$%^&*()_=-+?'
 }
 
-let generateBtn = {
+const generateBtn = {
   elem: document.querySelector("#generate"),
   clipLabel: document.querySelector('#copied')
 }
-let clickAll = {
+const clickAll = {
   elem: document.querySelector('#all')
 }
+
 let checkButtons = [upCheck, lowerCheck, numCheck, spcCheck]
 let possibleChar = []
 let finalPassword
 let passwordText
+
+
 // Write password to the #password input
 function writePassword() {
   finalPassword = generatePassword();
@@ -118,7 +121,7 @@ function generatePassword() {
   }
   return validatePassword(password.securePass)
 }
-
+let counter = 0
 // Need to verify if password meets requirements
 function validatePassword(p) {
   let validated = false
