@@ -1,17 +1,18 @@
 // Assignment Code
+
+document.querySelector('#length').value = 8
 let inputs = document.querySelectorAll('input')
-const password = {
+let password = {
   securePass: '',
   passLength: document.querySelector('#length').value,
   labelElem: document.querySelector('#display-length')
 }
-const upCheck = {
+let upCheck = {
   elem: document.querySelector('#upper'),
   req: false,
   isIncluded: function (p) {
     for (var i = 0; i < p.length; i++) {
       if (upCheck.charSet.includes(p[i])) {
-        console.log('UPPER INCLUDED')
         return true
       }
     }
@@ -19,13 +20,12 @@ const upCheck = {
   },
   charSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 }
-const lowerCheck = {
+let lowerCheck = {
   elem: document.querySelector('#lower'),
   req: false,
   isIncluded: function (p) {
     for (var i = 0; i < p.length; i++) {
       if (lowerCheck.charSet.includes(p[i])) {
-        console.log('lower included')
         return true
       }
     }
@@ -33,13 +33,12 @@ const lowerCheck = {
   },
   charSet: 'abcdefghijklmnopqrstuvwxyz'
 }
-const numCheck = {
+let numCheck = {
   elem: document.querySelector('#num'),
   req: false,
   isIncluded: function (p) {
     for (var i = 0; i < p.length; i++) {
       if (numCheck.charSet.includes(p[i])) {
-        console.log('num included')
         return true
       }
     }
@@ -47,13 +46,12 @@ const numCheck = {
   },
   charSet: '1234567890'
 }
-const spcCheck = {
+let spcCheck = {
   elem: document.querySelector('#spc'),
   req: false,
   isIncluded: function (p) {
     for (var i = 0; i < p.length; i++) {
       if (spcCheck.charSet.includes(p[i])) {
-        console.log('spc included')
         return true
       }
     }
@@ -62,20 +60,17 @@ const spcCheck = {
   charSet: '!@#$%^&*()_=-+?'
 }
 
-const generateBtn = {
+let generateBtn = {
   elem: document.querySelector("#generate"),
   clipLabel: document.querySelector('#copied')
 }
-const clickAll = {
+let clickAll = {
   elem: document.querySelector('#all')
 }
-
 let checkButtons = [upCheck, lowerCheck, numCheck, spcCheck]
 let possibleChar = []
 let finalPassword
 let passwordText
-
-
 // Write password to the #password input
 function writePassword() {
   finalPassword = generatePassword();
@@ -83,7 +78,7 @@ function writePassword() {
 
   if ((finalPassword === undefined)) {
     passwordText.value = 'Please select at least one criteria...'
-  } else{
+  } else {
     passwordText.value = finalPassword
   }
   navigator.clipboard.writeText(finalPassword)
@@ -127,23 +122,26 @@ function validatePassword(p) {
   let validated = false
   let yesCount = 0
 
-  while (yesCount !== possibleChar.length ) {
-    for (var i =0; i < possibleChar.length; i++) {
+  while (yesCount !== possibleChar.length) {
+    for (var i = 0; i < possibleChar.length; i++) {
       if (possibleChar[i].isIncluded(p)) {
-        console.log('yes')
         yesCount++
       }
     }
     if (yesCount === possibleChar.length) {
       validated = true
+    } else {
+      yesCount = 0
+      possibleChar = []
+      password.securePass = ''
+      counter++
+      console.log('Reruns: ' + counter)
+      p = generatePassword()
     }
   }
 
   if (validated) {
     return p
-  } else {
-    possibleChar = []
-    password.securePass = generatePassword()
   }
 }
 
