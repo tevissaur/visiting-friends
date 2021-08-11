@@ -8,25 +8,57 @@ let password = {
 let upCheck = {
   elem: document.querySelector('#upper'),
   req: false,
-  isIncluded: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (upCheck.charSet.includes(p[i])) {
+        console.log('UPPER INCLUDED')
+        return true
+      }
+    }
+    return false
+  },
   charSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 }
 let lowerCheck = {
   elem: document.querySelector('#lower'),
   req: false,
-  isIncluded: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (lowerCheck.charSet.includes(p[i])) {
+        console.log('lower included')
+        return true
+      }
+    }
+    return false
+  },
   charSet: 'abcdefghijklmnopqrstuvwxyz'
 }
 let numCheck = {
   elem: document.querySelector('#num'),
   req: false,
-  isIncluded: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (numCheck.charSet.includes(p[i])) {
+        console.log('num included')
+        return true
+      }
+    }
+    return false
+  },
   charSet: '1234567890'
 }
 let spcCheck = {
   elem: document.querySelector('#spc'),
   req: false,
-  isIncluded: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (spcCheck.charSet.includes(p[i])) {
+        console.log('spc included')
+        return true
+      }
+    }
+    return false
+  },
   charSet: '!@#$%^&*()_=-+?'
 }
 
@@ -39,102 +71,89 @@ let clickAll = {
 }
 let checkButtons = [upCheck, lowerCheck, numCheck, spcCheck]
 let possibleChar = []
-
+let finalPassword
+let passwordText
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-  if (password === undefined) {
-    passwordText.value = password;
-  }
-  if (!upCheck.isIncluded && !lowerCheck.isIncluded && !numCheck.isIncluded && !spcCheck.isIncluded){
-    console.log('Oopsy Woopsy')
-  }
-  if (!upCheck.req && !lowerCheck.req && !numCheck.req && !spcCheck.req){
-    passwordText.value = 'Please select some criteria...'
-  }
+  finalPassword = generatePassword();
+  passwordText = document.querySelector("#password");
 
+  if ((finalPassword === undefined)) {
+    passwordText.value = 'Please select at least one criteria...'
+  } else{
+    passwordText.value = finalPassword
+  }
+  navigator.clipboard.writeText(finalPassword)
+  generateBtn.clipLabel.textContent = 'Copied to clipboard!'
   for (var i = 0; i < checkButtons.length; i++) {
     checkButtons[i].elem.checked = false
   }
   possibleChar = []
 
+  password.securePass = ''
 
 }
 
 // Generate Password function
 function generatePassword() {
 
-  for (var i = 0; i < checkButtons.length; i++) {
-    let button = checkButtons[i]
+  for (var b = 0; b < checkButtons.length; b++) {
+    let button = checkButtons[b]
     button.req = button.elem.checked
     if (button.req) {
-      possibleChar.push(button.charSet)
-    } else {
-      console.log('Dont include ' + button.elem.id)
+      possibleChar.push(button)
     }
-    console.log(button)
   }
-  for (let z = 0; z < (password.passLength); z++){
-    password.securePass += ''
+  // Assembling the password
+  for (let z = 0; z < (password.passLength); z++) {
+    let chosenLetter
+    let button
     for (let i = 0; i < possibleChar.length; i++) {
-      let charSet = possibleChar[i]
-  
-      for (let x = 0; x < charSet.length; x++){
-        let letter = charSet[x]
-  
+      button = possibleChar[getRandInt(possibleChar.length)]
+      for (let x = 0; x < button.charSet.length; x++) {
+        chosenLetter = button.charSet[getRandInt(button.charSet.length)]
       }
     }
+    password.securePass += chosenLetter
   }
-  return password.securePass
+  return validatePassword(password.securePass)
 }
 
+// Need to verify if password meets requirements
+function validatePassword(p) {
+  let validated = false
+  let yesCount = 0
 
-  // for (var i = 0; i < password.passLength; i++) {
-  //   randList = Math.floor(Math.random() * charArray.length)
-  //   securePass += charArray[randList][Math.floor(Math.random() * charArray[randList].length)]
+  while (yesCount !== possibleChar.length ) {
+    for (var i =0; i < possibleChar.length; i++) {
+      if (possibleChar[i].isIncluded(p)) {
+        console.log('yes')
+        yesCount++
+      }
+    }
+    if (yesCount === possibleChar.length) {
+      validated = true
+    }
+  }
 
-  // }
-  // if (possibleChar.length !== 0) {
-  //   return securePass
-  //   for (var x = 0; x < securePass.length; x++) {
-  //     if (num.includes(securePass[x])) {
-  //       numBool = true
-  //     } else if (upper.includes(securePass[x])) {
-  //       upperBool = true
-  //     } else if (lower.includes(securePass[x])) {
-  //       lowerBool = true
-  //     } else if (spc.includes(securePass[x])) {
-  //       spcBool = true
-  //     }
-  //   }
+  if (validated) {
+    return p
+  } else {
+    possibleChar = []
+    password.securePass = generatePassword()
+  }
+}
 
-  //   if (numBool && upperBool && lowerBool && spcBool) {
-  //     possibleChar = ''
-  //     navigator.clipboard.writeText(securePass)
-  //     copyToClipboard.textContent = 'Copied to clipboard!'
-  //     return securePass
-  //   } else {
-  //     possibleChar = ''
-  //     securePass = ''
-  //     numBool = false
-  //     upperBool = false
-  //     lowerBool = false
-  //     spcBool = false
-  //   }
-
-  // } else {
-  //   securePass = 'Please select some criteria...'
-
-  //   return securePass
-  // }
-
-
+function getRandInt(max) {
+  let randInt = Math.floor(Math.random() * max)
+  return randInt
+}
 
 
 // Add event listener to get password length
 document.querySelector('#length').addEventListener('change', function () {
   password.labelElem.textContent = document.querySelector('#length').value
+  password.passLength = password.labelElem.textContent
 });
 
 
@@ -147,3 +166,5 @@ clickAll.elem.addEventListener('click', function () {
 
 // Add event listener to generate button
 generateBtn.elem.addEventListener("click", writePassword);
+
+password.labelElem.textContent = document.querySelector('#length').value
