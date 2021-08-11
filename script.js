@@ -1,118 +1,170 @@
 // Assignment Code
 let inputs = document.querySelectorAll('input')
-var generateBtn = document.querySelector("#generate");
-let passLength = document.querySelector('#length')
-let passLengthDisplay = document.getElementById('display-length')
-let copyToClipboard = document.querySelector('#copied')
-let clickAll = document.querySelector('#all')
-let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-let lower = 'abcdefghijklmnopqrstuvwxyz'
-let num = '1234567890'
-let spc = '!@#$%^&*()_=-+?'
-let charArray = [upper, lower, num, spc]
-let possibleChar = upper + lower + num + spc
-passLengthDisplay.textContent = passLength.value
+let password = {
+  securePass: '',
+  passLength: document.querySelector('#length').value,
+  labelElem: document.querySelector('#display-length')
+}
+let upCheck = {
+  elem: document.querySelector('#upper'),
+  req: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (upCheck.charSet.includes(p[i])) {
+        console.log('UPPER INCLUDED')
+        return true
+      }
+    }
+    return false
+  },
+  charSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+}
+let lowerCheck = {
+  elem: document.querySelector('#lower'),
+  req: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (lowerCheck.charSet.includes(p[i])) {
+        console.log('lower included')
+        return true
+      }
+    }
+    return false
+  },
+  charSet: 'abcdefghijklmnopqrstuvwxyz'
+}
+let numCheck = {
+  elem: document.querySelector('#num'),
+  req: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (numCheck.charSet.includes(p[i])) {
+        console.log('num included')
+        return true
+      }
+    }
+    return false
+  },
+  charSet: '1234567890'
+}
+let spcCheck = {
+  elem: document.querySelector('#spc'),
+  req: false,
+  isIncluded: function (p) {
+    for (var i = 0; i < p.length; i++) {
+      if (spcCheck.charSet.includes(p[i])) {
+        console.log('spc included')
+        return true
+      }
+    }
+    return false
+  },
+  charSet: '!@#$%^&*()_=-+?'
+}
 
-
+let generateBtn = {
+  elem: document.querySelector("#generate"),
+  clipLabel: document.querySelector('#copied')
+}
+let clickAll = {
+  elem: document.querySelector('#all')
+}
+let checkButtons = [upCheck, lowerCheck, numCheck, spcCheck]
+let possibleChar = []
+let finalPassword
+let passwordText
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+  finalPassword = generatePassword();
+  passwordText = document.querySelector("#password");
 
-  if (password !== undefined) {
-    passwordText.value = password;
-  } else {
-    generatePassword.call()
+  if ((finalPassword === undefined)) {
+    passwordText.value = 'Please select at least one criteria...'
+  } else{
+    passwordText.value = finalPassword
   }
-
-  for (var i = 0; i < inputs.length; i++) {
-    inputs[i].checked = false
+  navigator.clipboard.writeText(finalPassword)
+  generateBtn.clipLabel.textContent = 'Copied to clipboard!'
+  for (var i = 0; i < checkButtons.length; i++) {
+    checkButtons[i].elem.checked = false
   }
+  possibleChar = []
 
+  password.securePass = ''
 
 }
-for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('change', function addChar() {
-    let input = inputs[i]
-    if (input.checked) {
-      if ((input.id === 'lower')) {
-        possibleChar += upper
-      } else if ((input.id === 'upper')) {
-        possibleChar += lower
-      } else if ((input.id === 'num')) {
-        possibleChar += num
-      } else if ((input.id === 'spc')) {
-        possibleChar += spc
-      }
-    }
 
-  })
-}
 // Generate Password function
 function generatePassword() {
-  let numBool = false
-  let upperBool = false
-  let lowerBool = false
-  let spcBool = false
-  let securePass = ''
 
-
-  for (var i = 0; i < passLength.value; i++) {
-    securePass += charArray[Math.floor(Math.random() * charArray.length)][Math.floor(Math.random() * possibleChar.length)]
-    console.log(securePass)
-    securePass = ''
+  for (var b = 0; b < checkButtons.length; b++) {
+    let button = checkButtons[b]
+    button.req = button.elem.checked
+    if (button.req) {
+      possibleChar.push(button)
+    }
   }
-  if (possibleChar.length !== 0) {
-
-    for (var x = 0; x < securePass.length; x++) {
-      if (num.includes(securePass[x])) {
-        numBool = true
-      } else if (upper.includes(securePass[x])) {
-        upperBool = true
-      } else if (lower.includes(securePass[x])) {
-        lowerBool = true
-      } else if (spc.includes(securePass[x])) {
-        spcBool = true
+  // Assembling the password
+  for (let z = 0; z < (password.passLength); z++) {
+    let chosenLetter
+    let button
+    for (let i = 0; i < possibleChar.length; i++) {
+      button = possibleChar[getRandInt(possibleChar.length)]
+      for (let x = 0; x < button.charSet.length; x++) {
+        chosenLetter = button.charSet[getRandInt(button.charSet.length)]
       }
     }
-
-    if (numBool && upperBool && lowerBool && spcBool) {
-      possibleChar = ''
-      navigator.clipboard.writeText(securePass)
-      copyToClipboard.textContent = 'Copied to clipboard!'
-      return securePass
-    } else {
-      possibleChar = ''
-      securePass = ''
-      numBool = false
-      upperBool = false
-      lowerBool = false
-      spcBool = false
-    }
-
-  } else {
-    securePass = 'Please select some criteria...'
-
-    return securePass
+    password.securePass += chosenLetter
   }
-
-
+  return validatePassword(password.securePass)
 }
 
+// Need to verify if password meets requirements
+function validatePassword(p) {
+  let validated = false
+  let yesCount = 0
+
+  while (yesCount !== possibleChar.length ) {
+    for (var i =0; i < possibleChar.length; i++) {
+      if (possibleChar[i].isIncluded(p)) {
+        console.log('yes')
+        yesCount++
+      }
+    }
+    if (yesCount === possibleChar.length) {
+      validated = true
+    }
+  }
+
+  if (validated) {
+    return p
+  } else {
+    possibleChar = []
+    password.securePass = generatePassword()
+  }
+}
+
+function getRandInt(max) {
+  let randInt = Math.floor(Math.random() * max)
+  return randInt
+}
 
 
 // Add event listener to get password length
-passLength.addEventListener('change', function () {
-  passLengthDisplay.textContent = passLength.value
+document.querySelector('#length').addEventListener('change', function () {
+  password.labelElem.textContent = document.querySelector('#length').value
+  password.passLength = password.labelElem.textContent
 });
 
-clickAll.addEventListener('click', function () {
-  for (var i = 0; i < inputs.length; i++) {
-    if (!inputs[i].checked) {
-      inputs[i].checked = true
-    }
+
+
+clickAll.elem.addEventListener('click', function () {
+  for (var i = 0; i < checkButtons.length; i++) {
+    checkButtons[i].elem.checked = true
   }
 })
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.elem.addEventListener("click", writePassword);
+
+password.labelElem.textContent = document.querySelector('#length').value
