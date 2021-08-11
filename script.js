@@ -83,6 +83,7 @@ function writePassword() {
   }
   navigator.clipboard.writeText(finalPassword)
   generateBtn.clipLabel.textContent = 'Copied to clipboard!'
+
   for (var i = 0; i < checkButtons.length; i++) {
     checkButtons[i].elem.checked = false
   }
@@ -152,7 +153,7 @@ function getRandInt(max) {
 
 
 // Add event listener to get password length
-document.querySelector('#length').addEventListener('change', function () {
+document.querySelector('#length').addEventListener('input', function () {
   password.labelElem.textContent = document.querySelector('#length').value
   password.passLength = password.labelElem.textContent
 });

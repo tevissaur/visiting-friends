@@ -122,6 +122,10 @@ ul li {
   list-style-type: none;
   margin: 10px;
 }
+#length {
+  display: block;
+  width: 100%;
+}
 
 @media (max-width: 690px) {
   .btn {
