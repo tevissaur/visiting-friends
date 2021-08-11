@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Password Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>Password Generator</h1>
+    </header>
+    <div class="card">
+      <div class="card-header">
+        <h2>Generate a Password</h2>
+      </div>
+      <div class="card-body">
+        <textarea readonly id="password" placeholder="Your Secure Password" aria-label="Generated Password"></textarea>
+      </div>
+      <div class="card-footer">
+        <h3 id="copied"></h3>
+        <ul>
+          <form>
+            <li>
+              <label for="length">How long does the password need to be?</label>
+              <label for="length" id="display-length"></label>
+              <input type="range" id="length" name="length" min="8" max="128">
+            </li>
+            <li>
+              <label>Lowercases?</label>
+              <input type="checkbox" id="lower" value=false />
+            </li>
+            <li>
+              <label>Uppercases?</label>
+              <input type="checkbox" id="upper" value=false />
+            </li>
+            <li>
+              <label>Numbers?</label>
+              <input type="checkbox" id="num" />
+            </li>
+            <li>
+              <label>Special Characters?</label>
+              <input type="checkbox" id="spc" />
+            </li>
+          </form>
+          <li>
+            <button id="all">All criteria?</button>
+          </li>
+          <button id="generate" class="btn">Generate Password</button>
+        </ul>
+        
+        
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
