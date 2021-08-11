@@ -57,7 +57,7 @@ let spcCheck = {
     }
     return false
   },
-  charSet: '!@#$%^&*()_=-+?'
+  charSet: " !\"#$%&'()*+,-.\\/:;<=>?@[]^_`{|}~"
 }
 
 let generateBtn = {
@@ -71,6 +71,9 @@ let checkButtons = [upCheck, lowerCheck, numCheck, spcCheck]
 let possibleChar = []
 let finalPassword
 let passwordText
+let counter = 0
+
+
 // Write password to the #password input
 function writePassword() {
   finalPassword = generatePassword();
@@ -84,9 +87,9 @@ function writePassword() {
   navigator.clipboard.writeText(finalPassword)
   generateBtn.clipLabel.textContent = 'Copied to clipboard!'
 
-  for (var i = 0; i < checkButtons.length; i++) {
-    checkButtons[i].elem.checked = false
-  }
+  // for (var i = 0; i < checkButtons.length; i++) {
+  //   checkButtons[i].elem.checked = false
+  // }
   possibleChar = []
 
   password.securePass = ''
@@ -117,7 +120,7 @@ function generatePassword() {
   }
   return validatePassword(password.securePass)
 }
-let counter = 0
+
 // Need to verify if password meets requirements
 function validatePassword(p) {
   let validated = false
@@ -136,7 +139,7 @@ function validatePassword(p) {
       possibleChar = []
       password.securePass = ''
       counter++
-      console.log('Reruns: ' + counter)
+      console.log('Recursive reruns: ' + counter)
       p = generatePassword()
     }
   }
