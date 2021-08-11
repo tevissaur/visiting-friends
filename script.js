@@ -1,16 +1,37 @@
 // Assignment Code
 let inputs = document.querySelectorAll('input')
-var generateBtn = document.querySelector("#generate");
-let passLength = document.querySelector('#length')
+let passLength = {
+  elem: document.querySelector('#length'),
+  length: elem.length,
+  label: 
+}
+let upCheck = {
+  elem: document.querySelector('#upper'),
+  req: elem.checked,
+  charSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+}
+let lowerCheck = {
+  elem: document.querySelector('#lower'),
+  req: elem.checked,
+  charSet: 'abcdefghijklmnopqrstuvwxyz'
+}
+let numCheck = {
+  elem: document.querySelector('#num'),
+  req: elem.checked,
+  charSet: '1234567890'
+}
+let spcCheck = {
+  elem: document.querySelector('#spc'),
+  req: elem.checked,
+  charSet: '!@#$%^&*()_=-+?'
+}
+
+let generateBtn = document.querySelector("#generate");
 let passLengthDisplay = document.getElementById('display-length')
 let copyToClipboard = document.querySelector('#copied')
 let clickAll = document.querySelector('#all')
-let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-let lower = 'abcdefghijklmnopqrstuvwxyz'
-let num = '1234567890'
-let spc = '!@#$%^&*()_=-+?'
-let charArray = [upper, lower, num, spc]
-let possibleChar = upper + lower + num + spc
+let charArray = []
+let possibleChar = ''
 passLengthDisplay.textContent = passLength.value
 
 
@@ -31,23 +52,23 @@ function writePassword() {
 
 
 }
-for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('change', function addChar() {
-    let input = inputs[i]
-    if (input.checked) {
-      if ((input.id === 'lower')) {
-        possibleChar += upper
-      } else if ((input.id === 'upper')) {
-        possibleChar += lower
-      } else if ((input.id === 'num')) {
-        possibleChar += num
-      } else if ((input.id === 'spc')) {
-        possibleChar += spc
-      }
-    }
+// for (var i = 0; i < inputs.length; i++) {
+//   inputs[i].addEventListener('change', function addChar() {
+//     let input = inputs[i]
+//     if (input.checked) {
+//       if ((input.id === 'lower')) {
+//         possibleChar += upper
+//       } else if ((input.id === 'upper')) {
+//         possibleChar += lower
+//       } else if ((input.id === 'num')) {
+//         possibleChar += num
+//       } else if ((input.id === 'spc')) {
+//         possibleChar += spc
+//       }
+//     }
 
-  })
-}
+//   })
+// }
 // Generate Password function
 function generatePassword() {
   let numBool = false
@@ -58,12 +79,13 @@ function generatePassword() {
 
 
   for (var i = 0; i < passLength.value; i++) {
-    securePass += charArray[Math.floor(Math.random() * charArray.length)][Math.floor(Math.random() * possibleChar.length)]
-    console.log(securePass)
-    securePass = ''
-  }
-  if (possibleChar.length !== 0) {
+    var randList = Math.floor(Math.random() * charArray.length)
+    securePass += charArray[randList][Math.floor(Math.random() * charArray[randList].length)]
 
+  }
+  console.log(securePass)
+  if (possibleChar.length !== 0) {
+    return securePass
     for (var x = 0; x < securePass.length; x++) {
       if (num.includes(securePass[x])) {
         numBool = true
