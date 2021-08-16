@@ -2,12 +2,12 @@
 
 document.querySelector('#length').value = 8
 let inputs = document.querySelectorAll('input')
-let password = {
+const password = {
     securePass: '',
     passLength: document.querySelector('#length').value,
     labelElem: document.querySelector('#display-length')
 }
-let upCheck = {
+const upCheck = {
     elem: document.querySelector('#upper'),
     req: false,
     isIncluded: function(p) {
@@ -20,7 +20,7 @@ let upCheck = {
     },
     charSet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 }
-let lowerCheck = {
+const lowerCheck = {
     elem: document.querySelector('#lower'),
     req: false,
     isIncluded: function(p) {
@@ -33,7 +33,7 @@ let lowerCheck = {
     },
     charSet: 'abcdefghijklmnopqrstuvwxyz'
 }
-let numCheck = {
+const numCheck = {
     elem: document.querySelector('#num'),
     req: false,
     isIncluded: function(p) {
@@ -46,7 +46,7 @@ let numCheck = {
     },
     charSet: '1234567890'
 }
-let spcCheck = {
+const spcCheck = {
     elem: document.querySelector('#spc'),
     req: false,
     isIncluded: function(p) {
@@ -60,11 +60,11 @@ let spcCheck = {
     charSet: " !\"#$%&'()*+,-.\\/:;<=>?@[]^_`{|}~"
 }
 
-let generateBtn = {
+const generateBtn = {
     elem: document.querySelector("#generate"),
     clipLabel: document.querySelector('#copied')
 }
-let clickAll = {
+const clickAll = {
     elem: document.querySelector('#all')
 }
 let checkButtons = [upCheck, lowerCheck, numCheck, spcCheck]
@@ -123,7 +123,6 @@ function generatePassword() {
 
 // Need to verify if password meets requirements
 function validatePassword(p) {
-    let validated = false
     let yesCount = 0
 
     while (yesCount !== possibleChar.length) {
@@ -133,7 +132,7 @@ function validatePassword(p) {
             }
         }
         if (yesCount === possibleChar.length) {
-            validated = true
+            return p
         } else {
             yesCount = 0
             possibleChar = []
@@ -143,11 +142,8 @@ function validatePassword(p) {
             p = generatePassword()
         }
     }
-
-    if (validated) {
-        return p
-    }
 }
+
 
 function getRandInt(max) {
     let randInt = Math.floor(Math.random() * max)
