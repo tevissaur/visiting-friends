@@ -2,12 +2,12 @@
 
 - This app generates a secure password for the user that includes all the requirements set by the user. 
 - Currently learning how to manipulate the DOM
+- Copies the password to clipboard automatically
 
 ## Running the app
 
 1. Simply visit this link!
 [Github Pages Link](https://tevissaur.github.io/visiting-friends/)
-
 
 ## How to use the app
 
