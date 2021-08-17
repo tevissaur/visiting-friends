@@ -57,7 +57,7 @@ const spcCheck = {
         }
         return false
     },
-    charSet: " !\"#$%&'()*+,-.\\/:;<=>?@[]^_`{|}~"
+    charSet: "!\"#$%&'()*+,-.\\/:;<=>?@[]^_`{|}~"
 }
 
 const generateBtn = {
